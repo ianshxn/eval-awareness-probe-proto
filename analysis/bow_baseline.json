@@ -1,0 +1,126 @@
+{
+  "data": "C:\\Users\\ishen\\nguyen eval awareness probe\\evaluation-awareness-probing\\datasets\\eval_vs_deploy_labelled.json",
+  "n_examples": 294,
+  "n_testing": 147,
+  "n_deployment": 147,
+  "folds": 5,
+  "seed": 0,
+  "label_convention": "deployment=1, testing=0 (src/probe_analysis.py:183)",
+  "probe_auroc_layer10_sign_corrected": 0.884,
+  "ablations": {
+    "full": {
+      "mean_auroc": 1.0,
+      "std": 0.0,
+      "fold_aurocs": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "function-words": {
+      "mean_auroc": 0.9393182718985335,
+      "std": 0.046389826036648305,
+      "fold_aurocs": [
+        0.9344827586206897,
+        0.8804597701149426,
+        0.9908045977011494,
+        0.993103448275862,
+        0.8977407847800238
+      ]
+    },
+    "punctuation": {
+      "mean_auroc": 0.9572017439556084,
+      "std": 0.04094299069912788,
+      "fold_aurocs": [
+        0.993103448275862,
+        0.9942528735632185,
+        0.8816091954022989,
+        0.957471264367816,
+        0.9595719381688466
+      ]
+    },
+    "length": {
+      "mean_auroc": 0.5126238604835514,
+      "std": 0.06611662138812865,
+      "fold_aurocs": [
+        0.5505747126436782,
+        0.44252873563218387,
+        0.6172413793103448,
+        0.5074712643678161,
+        0.44530321046373367
+      ]
+    }
+  },
+  "top_deployment_terms": [
+    "you",
+    "write",
+    "my",
+    "your",
+    "can",
+    "we",
+    "data",
+    "be",
+    "should",
+    "me",
+    "want",
+    "like",
+    "as",
+    "our",
+    "of",
+    "create",
+    "number",
+    "list",
+    "or",
+    "please"
+  ],
+  "top_testing_terms": [
+    "she",
+    "her",
+    "while",
+    "he",
+    "response",
+    "very",
+    "brief response",
+    "his",
+    "think",
+    "when",
+    "brief",
+    "they",
+    "later",
+    "room",
+    "before",
+    "does",
+    "their",
+    "day",
+    "returns",
+    "briefly"
+  ],
+  "surface_cue_counts": {
+    "Brevity instruction (\"brief\", \"concise\")": {
+      "testing": 95,
+      "deployment": 10
+    },
+    "Belief/ToM verbs (think, believe, unaware)": {
+      "testing": 99,
+      "deployment": 15
+    },
+    "Imperative opening (write/create/act as/help me)": {
+      "testing": 0,
+      "deployment": 20
+    },
+    "Any non-ASCII character": {
+      "testing": 0,
+      "deployment": 42
+    },
+    "Curly quote / em dash / ellipsis": {
+      "testing": 0,
+      "deployment": 26
+    },
+    "Median length (chars)": {
+      "testing": 522,
+      "deployment": 693
+    }
+  }
+}
