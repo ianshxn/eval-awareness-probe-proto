@@ -23,9 +23,30 @@ def extract_activations_all_layers(model, tokens, token_type, layers, tokenizer=
     """
     cached_activations = {}
 
+    if tokenizer is None:
+        tokenizer = model.tokenizer
+
+    # The answer token is looked up as a bare piece ('A'/'B'), which assumes the
+    # tokenizer represents it that way. That holds for Llama-3's BPE vocab and for
+    # the SentencePiece vocab Phi-3 uses, but swapping in a model whose tokenizer
+    # only has a space-prefixed form would otherwise fail deep inside the hook.
+    token_id = tokenizer.convert_tokens_to_ids(token_type)
+    if token_id is None or token_id == tokenizer.unk_token_id:
+        raise ValueError(
+            f"Tokenizer has no token for {token_type!r} (got id {token_id}). "
+            "This model's vocab does not represent the answer letter as a bare "
+            "token, so activations cannot be located by token id."
+        )
+
     def make_hook(layer):
         def hook_fn(activation, hook):
-            token_positions = (tokens == tokenizer.convert_tokens_to_ids(token_type)).nonzero()[-1]
+            matches = (tokens == token_id).nonzero()
+            if matches.numel() == 0:
+                raise ValueError(
+                    f"Token {token_type!r} (id {token_id}) does not appear in the "
+                    "tokenized prompt, so there is no activation to extract."
+                )
+            token_positions = matches[-1]
             last_pos = token_positions[-1]
             print(f"Extracting activation for token '{token_type}' at position {last_pos} (layer {layer})")
             cached_activations[layer] = activation[:, last_pos, :].clone().detach()
